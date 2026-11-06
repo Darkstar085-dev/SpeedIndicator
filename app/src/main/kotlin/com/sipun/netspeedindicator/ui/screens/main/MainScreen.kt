@@ -1,13 +1,13 @@
 package com.sipun.netspeedindicator.ui.screens.main
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.compose.material3.Scaffold
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.sipun.netspeedindicator.ui.components.AppBottomNavigation
@@ -25,13 +25,17 @@ fun MainScreen() {
 
 @Composable
 fun MainScreenContent(navController: NavHostController) {
-    Box(
+    Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .statusBarsPadding()
-    ) {
+            .statusBarsPadding(),
+        contentWindowInsets = WindowInsets(0),
+        bottomBar = { AppBottomNavigation(navController) }
+    ) { innerPadding ->
         NavHost(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
             navController = navController,
             startDestination = MainRoute.Home
         ) {
@@ -39,13 +43,6 @@ fun MainScreenContent(navController: NavHostController) {
             appNavComposable<MainRoute.History> { HistoryScreen() }
             appNavComposable<MainRoute.AppDataUsage> { AppDataUsageScreen() }
             appNavComposable<MainRoute.Settings> { SettingsScreen() }
-        }
-
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            AppBottomNavigation(navController)
         }
     }
 }
